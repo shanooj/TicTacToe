@@ -1,6 +1,7 @@
 package com.karbaros.tictactoe;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,9 +22,12 @@ public class MainActivity extends AppCompatActivity {
     GridLayout gridLayout;
     TextView winnerMessage;
     ImageView ivResult;
+    ImageView ivTic;
     private Animation animFadeIn;
+    private Animation animFadeOut;
     private Animation animBounce;
     private Animation animBlink;
+    private Handler handler;
 
 
     public void setButton(View view) {
@@ -74,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void restartGame(View view) {
+
+        layout.setAnimation(animFadeOut);
+        gridLayout.setAnimation(animFadeIn);
         initilizeVariable();
 
 
@@ -92,20 +99,27 @@ public class MainActivity extends AppCompatActivity {
         winnerMessage = (TextView) findViewById(R.id.tvWinner);
         ivResult = (ImageView) findViewById(R.id.ivResult);
         gridLayout = (GridLayout) findViewById(R.id.glBoard);
+        ivTic = (ImageView) findViewById(R.id.Tic);
         animFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        animFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         animBounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
         animBlink = AnimationUtils.loadAnimation(this, R.anim.blink);
+        handler = new Handler();
 
         initilizeVariable();
     }
 
     public void initilizeVariable() {
+
         isGameActive = true;
         activePlayer = 0;
-        //layout.setAnimation(animFadeOut);
+        
         layout.setVisibility(View.INVISIBLE);
+        ivTic.setVisibility(View.VISIBLE);
+
+
         gridLayout.setVisibility(View.VISIBLE);
-        gridLayout.setAnimation(animFadeIn);
+
 
         for (int i = 0; i < gameState.length; i++)
             gameState[i] = 2;
@@ -114,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public void setWinnigResult(String result, int drawableId) {
 
         gridLayout.setVisibility(View.INVISIBLE);
+        ivTic.setVisibility(View.INVISIBLE);
         layout.setVisibility(View.VISIBLE);
 
         winnerMessage.setText(result);
